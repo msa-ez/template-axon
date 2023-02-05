@@ -1,5 +1,3 @@
-
-
 forEach: View
 representativeFor: View
 fileName: {{namePascalCase}}Query.java
@@ -13,7 +11,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 {{importTypes queryParameters}}
 
+import lombok.Data;
 
+@Data
 public class {{namePascalCase}}Query {
 
     {{#queryParameters}}
@@ -24,4 +24,3 @@ public class {{namePascalCase}}Query {
     {{/queryParameters}}
     
 }
-

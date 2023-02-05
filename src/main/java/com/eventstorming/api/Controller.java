@@ -55,6 +55,22 @@ public class {{ namePascalCase }}Controller {
         throws Exception {
       System.out.println("##### /{{aggregate.nameCamelCase}}/{{nameCamelCase}}  called #####");
 
+      {{#outgoingReadModelRefs}}
+      {{#value}}
+      {{#ifEquals dataProjection "query-for-aggregate"}}
+      {{namePascalCase}}Query query = new {{nameCamelCase}}Query();
+
+      //TODO: set query parameters 
+      queryGateway.send(query, ).get().ifPresent(result -> {
+          command.set{{aggregate.namePascalCase}}(result);
+      }
+
+      {{else}}
+      {{namePascalCase}}ReadModel {{nameCamelCase}}ReadModel;
+      {{/ifEquals}}
+      {{/value}}
+      {{/outgoingReadModelRefs}}
+
       // send command
       return commandGateway.send({{nameCamelCase}}Command)            
             .thenApply(
@@ -75,9 +91,10 @@ public class {{ namePascalCase }}Controller {
   @RequestMapping(value = "/{{ aggregate.namePlural }}/{id}/{{controllerInfo.apiPath}}",
         method = RequestMethod.{{controllerInfo.method}},
         produces = "application/json;charset=UTF-8")
-  public CompletableFuture {{nameCamelCase}}(@PathVariable("id") {{aggregate.aggregateRoot.keyFieldDescriptor.className}} id, @RequestBody {{namePascalCase}}Command {{nameCamelCase}}Command)
+  public CompletableFuture {{nameCamelCase}}(@PathVariable("id") {{aggregate.aggregateRoot.keyFieldDescriptor.className}} id{{#ifHasBody}}, @RequestBody {{namePascalCase}}Command {{nameCamelCase}}Command{{/ifHasBody}})
         throws Exception {
       System.out.println("##### /{{aggregate.nameCamelCase}}/{{nameCamelCase}}  called #####");
+      {{^ifHasBody}}{{namePascalCase}}Command {{nameCamelCase}}Command = new {{namePascalCase}}Command();{{/ifHasBody}}
       {{nameCamelCase}}Command.set{{aggregate.aggregateRoot.keyFieldDescriptor.namePascalCase}}(id);
       // send command
       return commandGateway.send({{nameCamelCase}}Command);
@@ -122,6 +139,12 @@ public class {{ namePascalCase }}Controller {
 
     {{/commands}}
 
+    model.add(
+        Link
+        .of("/{{namePlural}}/" + resource.get{{@root.aggregateRoot.keyFieldDescriptor.namePascalCase}}() + "/events")
+        .withRel("events")
+    );
+
     return model;
   }
 
@@ -129,3 +152,33 @@ public class {{ namePascalCase }}Controller {
 
 }
 //>>> Clean Arch / Inbound Adaptor
+
+<function>
+
+
+    // this.commands[0].outgoingReadModelRefs = [{
+    //     value: {
+    //         dataProjection: "query-for-aggregate",
+    //         aggregate: {
+    //             namePascalCase: "Calendar",
+    //             nameCamelCase: "calendar"
+    //         },
+    //         queryParameters: [
+    //             {
+    //                 namePascalCase: "UserId",
+    //                 className: "java.lang.String"
+    //             },
+    //             {
+    //                 namePascalCase: "From",
+    //                 className: "java.util.Date"
+    //             }
+    //         ]
+    //     }
+    // }]
+
+  window.$HandleBars.registerHelper("ifHasBody", function(options){
+   //if(this.name=="approve") debugger;  
+    return this.fieldDescriptors.length > 0 ? options.fn(this) : options.inverse(this)
+  })
+
+</function>

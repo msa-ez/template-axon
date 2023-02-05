@@ -1,4 +1,4 @@
-forEach: Aggregate
+.forEach: Aggregate
 fileName: {{namePascalCase}}Aggregate.java
 path: {{boundedContext.name}}/{{{options.packagePath}}}/aggregate
 ---
@@ -12,6 +12,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 
 import org.springframework.beans.BeanUtils;
 import java.util.List;
+import java.util.UUID;
 
 import lombok.Data;
 import lombok.ToString;
@@ -52,10 +53,9 @@ public class {{namePascalCase}}Aggregate {
         BeanUtils.copyProperties(command, event);     
 
         {{#if (isRepositoryPost ../this)}}
-        //<<< Etc / ID Generation
-        //Please uncomment here and implement the createUUID method.
-        //event.setId(createUUID());
-        //>>> Etc / ID Generation
+        //TODO: check key generation is properly done
+        if(event.get{{@root.aggregateRoot.keyFieldDescriptor.namePascalCase}}()==null)
+            event.set{{@root.aggregateRoot.keyFieldDescriptor.namePascalCase}}(createUUID());
         {{/if}}
 
         apply(event);
@@ -64,6 +64,9 @@ public class {{namePascalCase}}Aggregate {
         {{#commandValue}}
         //Following code causes dependency to external APIs
         // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
+
+
+   
 
         {{options.package}}.external.{{aggregate.namePascalCase}} {{aggregate.nameCamelCase}} = new {{options.package}}.external.{{aggregate.namePascalCase}}();
         // mappings goes here
@@ -75,6 +78,12 @@ public class {{namePascalCase}}Aggregate {
     }
 
     {{/commands}}
+
+//<<< Etc / ID Generation
+    private String createUUID() {
+        return UUID.randomUUID().toString();
+    }
+//>>> Etc / ID Generation
 
     {{#policies}}
 
@@ -106,10 +115,9 @@ public class {{namePascalCase}}Aggregate {
 
 
 
-
+//<<< EDA / Event Sourcing
 
     {{#events}}
-//<<< EDA / Event Sourcing
     
     @EventSourcingHandler
     public void on({{namePascalCase}}Event event) {
@@ -118,16 +126,21 @@ public class {{namePascalCase}}Aggregate {
         BeanUtils.copyProperties(event, this);
         {{/isCreationEvent}}
 
+        //TODO: business logic here
+
     }
 
     {{/events}}
 //>>> EDA / Event Sourcing
+
 
 }
 //>>> DDD / Aggregate Root
 
 
 <function>
+
+
 
 window.$HandleBars.registerHelper('jp', function (jsonPath) {
     var evaluatedVal = window.jp.query(this, jsonPath);
@@ -136,6 +149,7 @@ window.$HandleBars.registerHelper('jp', function (jsonPath) {
 });
 
 window.$HandleBars.registerHelper('isCreationEvent', function (options) {
+    if(this.incomingCommandRefs)
     for(var i=0; i<this.incomingCommandRefs.length; i++)
         if(checkCommandIsRepositoryPost(this.incomingCommandRefs[i].value)) return options.fn(this);
 

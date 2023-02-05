@@ -1,4 +1,3 @@
-
 forEach: View
 representativeFor: View
 fileName: {{namePascalCase}}CQRSHandlerReusingAggregate.java
@@ -16,6 +15,7 @@ import {{options.package}}.aggregate.*;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
+import org.axonframework.queryhandling.QueryUpdateEmitter;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +35,11 @@ public class {{namePascalCase}}CQRSHandlerReusingAggregate {
 //<<< EDA / CQRS
     @Autowired
     private {{aggregate.namePascalCase}}ReadModelRepository repository;
+
+//<<< Etc / RSocket
+    @Autowired
+    private QueryUpdateEmitter queryUpdateEmitter;
+//>>> Etc / RSocket
 
     @QueryHandler
     public List<{{aggregate.namePascalCase}}ReadModel> handle({{namePascalCase}}Query query) {
@@ -58,6 +63,10 @@ public class {{namePascalCase}}CQRSHandlerReusingAggregate {
         
         repository.save(entity);
 
+//<<< Etc / RSocket
+        queryUpdateEmitter.emit({{@root.namePascalCase}}Query.class, query -> true, entity);
+//>>> Etc / RSocket
+
     }
         {{else}}
 
@@ -74,6 +83,10 @@ public class {{namePascalCase}}CQRSHandlerReusingAggregate {
 
                 repository.save(entity);
 
+//<<< Etc / RSocket
+                queryUpdateEmitter.emit({{@root.namePascalCase}}SingleQuery.class, query -> query.get{{@root.aggregate.aggregateRoot.keyFieldDescriptor.namePascalCase}}().equals(event.get{{@root.aggregate.aggregateRoot.keyFieldDescriptor.namePascalCase}}()), entity);
+//>>> Etc / RSocket
+
             });
 
     }
@@ -85,7 +98,10 @@ public class {{namePascalCase}}CQRSHandlerReusingAggregate {
 
 <function>
  
-this.aggregate = this.boundedContext.aggregates[0];
+var me = this;
+this.boundedContext.aggregates.forEach(agg => {if(agg.name==me.name) me.aggregate = agg});
+
+
 
 this.contexts.isNotQueryForAggregate = (this.dataProjection != "query-for-aggregate")
 

@@ -1,6 +1,9 @@
+forEach: Model
+fileName: Application.java
+
 path: /src/main/java/com/example/template
 ---
-package {{options.package}};
+package com.example.template;
 {{#if (isSelectedSecurity selectedSecurity)}}
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,6 +40,8 @@ public class Application {
 
 
 <function>
+
+	this.options.packagePath = "src/main/java/" + this.options.package.replaceAll(".", "/")
 	window.$HandleBars.registerHelper('isSelectedSecurity', function (selectedSecurity) {
 		try{
 			if(!selectedSecurity)

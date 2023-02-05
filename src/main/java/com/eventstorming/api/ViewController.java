@@ -1,9 +1,4 @@
-
-
-
-
-
-forEach: View
+RforEach: View
 fileName: {{namePascalCase}}QueryController.java
 path: {{boundedContext.name}}/{{{options.packagePath}}}/api
 _except: {{contexts.isNotCQRS}}
@@ -28,6 +23,12 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import reactor.core.publisher.Flux;
+import org.axonframework.extensions.reactor.queryhandling.gateway.ReactorQueryGateway;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+
+
 import {{options.package}}.query.*;
 
 
@@ -38,12 +39,15 @@ public class {{@root.namePascalCase}}QueryController {
 
   private final QueryGateway queryGateway;
 
+//<<< Etc / RSocket
+  private final ReactorQueryGateway reactorQueryGateway;
+//>>> Etc / RSocket
 
-  public {{@root.namePascalCase}}QueryController(QueryGateway queryGateway) {
+  public {{@root.namePascalCase}}QueryController(QueryGateway queryGateway, ReactorQueryGateway reactorQueryGateway) {
       this.queryGateway = queryGateway;
+      this.reactorQueryGateway = reactorQueryGateway;
   }
   
-
   @GetMapping("/{{namePlural}}")
   public CompletableFuture findAll({{@root.namePascalCase}}Query query) {
       return queryGateway.query(query , ResponseTypes.multipleInstancesOf({{@root.contexts.readModelClass}}.class))
@@ -98,31 +102,70 @@ public class {{@root.namePascalCase}}QueryController {
     {{#@root.contexts.isNotCQRS}}
       {{#@root.contexts.target.commands}}
       {{#ifEquals isRestRepository false}}
-          model.add(
-              Link
-              .of("/{{../namePlural}}/" + resource.get{{../../contexts.keyField}}() + "/{{controllerInfo.apiPath}}")
-              .withRel("{{controllerInfo.apiPath}}")
-          );
+    model.add(
+        Link
+        .of("/{{../namePlural}}/" + resource.get{{../../contexts.keyField}}() + "/{{controllerInfo.apiPath}}")
+        .withRel("{{controllerInfo.apiPath}}")
+    );
       {{/ifEquals}}
       {{/@root.contexts.target.commands}}
+
+    model.add(
+        Link
+        .of("/{{namePlural}}/"+ resource.get{{@root.contexts.keyField}}() + "/events")
+        .withRel("events")
+    );
+
     {{/@root.contexts.isNotCQRS}}
 
     return model;
   }
 
+  //<<< Etc / RSocket
+    @MessageMapping("{{namePlural}}.all")
+    public Flux<{{@root.contexts.readModelClass}}> subscribeAll() {
+        return reactorQueryGateway
+                .subscriptionQueryMany(new {{@root.namePascalCase}}Query(), {{@root.contexts.readModelClass}}.class);
+    }
+
+    @MessageMapping("{{namePlural}}.{id}.get")
+    public Flux<{{@root.contexts.readModelClass}}> subscribeSingle(
+        @DestinationVariable {{@root.contexts.keyFieldClass}} id
+    ) {
+        {{@root.namePascalCase}}SingleQuery query = new {{@root.namePascalCase}}SingleQuery();
+        query.set{{@root.contexts.keyField}}(id);
+
+        return reactorQueryGateway.subscriptionQuery(
+            query,
+            {{@root.contexts.readModelClass}}.class
+        );
+    }
+//>>> Etc / RSocket
+
+
   {{/contexts.target}}
+
+
+
 
 }
 
 <function>
+
+var me = this;
+this.boundedContext.aggregates.forEach(agg => {if(agg.name==me.name) me.aggregate = agg});
+
+
 this.contexts.isNotCQRS = this.dataProjection!="cqrs"
 
 this.contexts.keyField = "Long";
 this.contexts.keyFieldClass = "String";
 var me = this;
 
+
+
 if(this.dataProjection == "query-for-aggregate"){
-  this.contexts.target = this.boundedContext.aggregates[0];
+  this.contexts.target = this.aggregate;
   this.contexts.readModelClass = this.contexts.target.namePascalCase + "ReadModel";
 
   this.contexts.target.aggregateRoot.fieldDescriptors.forEach(fd => {if(fd.isKey) {

@@ -1,10 +1,8 @@
-
-
 forEach: BoundedContext
 fileName: PolicyHandler.java
 
 path: {{name}}/{{{options.packagePath}}}/policy
-except: {{contexts.isNotSaga}}
+except: {{isSaga}}
 
 ---
 package {{options.package}}.policy;
@@ -45,6 +43,7 @@ public class PolicyHandler{
         System.out.println({{eventValue.nameCamelCase}}.toString());
 
         {{../namePascalCase}}Command command = new {{../namePascalCase}}Command();
+        //TODO: mapping attributes (anti-corruption)
         commandGateway.send(command);
     }
         {{/relationEventInfo}}
@@ -55,6 +54,3 @@ public class PolicyHandler{
 //>>> Clean Arch / Inbound Adaptor
 
 
-<function>
-this.contexts.isNotSaga = (this.fieldDescriptors == null);
-</function>

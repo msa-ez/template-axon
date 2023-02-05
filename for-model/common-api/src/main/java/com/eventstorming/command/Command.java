@@ -1,7 +1,3 @@
-
-
-
-
 forEach: Command
 fileName: {{namePascalCase}}Command.java
 path: common-api/{{{options.packagePath}}}/command
@@ -15,9 +11,18 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import lombok.Data;
 import lombok.ToString;
 import java.util.List;
-import {{options.package}}.query.*;
 
 {{importTypes fieldDescriptors}}
+
+{{#outgoingReadModelRefs}}
+{{#value}}
+{{#ifEquals dataProjection "query-for-aggregate"}}
+import {{@root.options.package}}.{{aggregate.namePascalCase}}ReadModel;
+{{else}}
+import {{@root.options.package}}.{{namePascalCase}}ReadModel;
+{{/ifEquals}}
+{{/value}}
+{{/outgoingReadModelRefs}}
 
 @ToString
 @Data
@@ -53,33 +58,46 @@ public class {{namePascalCase}}Command {
     {{/fieldDescriptors}}
 
     {{/if}}
+
+
+    {{#outgoingReadModelRefs}}
+    {{#value}}
+    {{#ifEquals dataProjection "query-for-aggregate"}}
+    {{aggregate.namePascalCase}}ReadModel {{aggregate.nameCamelCase}}ReadModel;
+    {{else}}
+    {{namePascalCase}}ReadModel {{nameCamelCase}}ReadModel;
+    {{/ifEquals}}
+    {{/value}}
+    {{/outgoingReadModelRefs}}
 }
-
-
 
 <function>
 
-window.$HandleBars.registerHelper('importTypes', function (fieldDescriptors) {
-    var imports = "";
+    // var theReadModel = null;
 
-    var typeMappings = {
-        "Date": "java.util.Date",
-        "BigDecimal": "java.math.BigDecimal"
-    };
+    // this.outgoingReadModelRefs = [{
+    //     value: {
+    //         dataProjection: "query-for-aggregate",
+    //         aggregate: {
+    //             namePascalCase: "Calendar",
+    //             nameCamelCase: "calendar"
+    //         },
+    //         queryParameters: [
+    //             {
+    //                 namePascalCase: "UserId",
+    //                 className: "java.lang.String"
+    //             },
+    //             {
+    //                 namePascalCase: "From",
+    //                 className: "java.util.Date"
+    //             }
+    //         ]
+    //     }
+    // }]
 
-    for(var i = 0; i < fieldDescriptors.length; i ++ ){
-        if(fieldDescriptors[i]){
-            var fullTypeName = typeMappings[fieldDescriptors[i].className];
-
-            if(fullTypeName){
-                imports += "import " + fullTypeName + ";\n";
-                typeMappings[fieldDescriptors[i].className] = null;
-            }
-        } 
-    }
-
-    return imports;
-});
+    // if(this.outgoingReadModelRefs && this.outgoingReadModelRefs.length > 0){
+    //     this
+    // }
 
 
 </function>

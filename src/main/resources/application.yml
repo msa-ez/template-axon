@@ -1,4 +1,3 @@
-
 forEach: BoundedContext
 fileName: application.yml
 path: {{name}}/src/main/resources
@@ -7,7 +6,7 @@ server:
   port: 8080
   error:
     include-message: always
-    
+
 ---
 spring:
   profiles: default
@@ -27,9 +26,19 @@ spring:
     password: rootpassword
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+//<<< Etc / RSocket
+  rsocket:
+    server:
+      mapping-path: /rsocket/{{namePlural}}
+      transport: websocket
+      port: {{websocketPort portGenerated}}
+//>>> Etc / RSocket
+
 server:
   port: {{portGenerated}}
+
 ---
 spring:
   profiles: docker
+
 

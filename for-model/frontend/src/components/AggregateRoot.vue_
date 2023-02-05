@@ -1,4 +1,3 @@
-
 forEach: Aggregate
 fileName: {{namePascalCase}}.vue
 path: frontend/src/components
@@ -39,6 +38,12 @@ path: frontend/src/components
         {{/if}}
         {{/if}}
         {{/aggregateRoot.fieldDescriptors}}
+
+            <EventViewer
+                v-if="value._links && value._links.events"
+                :src="value._links.events.href"
+            >
+            </EventViewer>
         </v-card-text>
 
         <v-card-actions>
@@ -161,6 +166,11 @@ path: frontend/src/components
 <script>
     const axios = require('axios').default;
 
+    import { RSocketClient } from 'rsocket-core';
+    import RSocketWebSocketClient from 'rsocket-websocket-client';
+    import { IdentitySerializer, JsonSerializer } from "rsocket-core/build";
+
+
     {{#aggregateRoot.fieldDescriptors}}
     {{#if (isNotId nameCamelCase)}}
     {{#if (isPrimitive className)}}
@@ -206,6 +216,76 @@ path: frontend/src/components
         {{/isRestRepository}}
         {{/commands}}
         }),
+        created(){
+            if(this.isNew) return;
+
+            var websocketUrl = new URL(window.location.href);
+
+            websocketUrl.protocol = "wss";
+            websocketUrl.pathname = "/rsocket/{{@root.namePlural}}";
+            websocketUrl.hash = "";
+            
+            var me = this;
+
+            const transport = new RSocketWebSocketClient(
+                {
+                    url: websocketUrl.href
+                }
+            );
+            const client = new RSocketClient({
+                // send/receive JSON objects instead of strings/buffers
+                serializers: {
+                data: JsonSerializer,
+                metadata: IdentitySerializer
+                },
+                setup: {
+                // ms btw sending keepalive to server
+                keepAlive: 60000,
+                // ms timeout if no keep-alive response
+                lifetime: 180000,
+                dataMimeType: "application/json",
+                metadataMimeType: 'message/x.rsocket.routing.v0'
+                },
+                transport
+            });
+            client.connect().subscribe({
+                onComplete: socket => {
+                let requestedMsg = 10;
+
+                // console.log("connected to rsocket"); // debug
+                const endpoint = "{{@root.namePlural}}."+ me.value.{{@root.aggregateRoot.keyFieldDescriptor.nameCamelCase}} +".get"
+                socket.requestStream({
+                    data: {},
+                    metadata: String.fromCharCode(endpoint.length) + endpoint
+                })
+                    .subscribe({
+                        onSubscribe: (sub) => {
+                            console.log("subscribed to server stream"); // debug
+                            this.requestStreamSubscription = sub
+                            this.requestStreamSubscription.request(requestedMsg)
+                        },
+                        onNext: (e) => {
+                            e.data._links = me.value._links;
+                            me.value = e.data
+                            
+                        },
+                        onError: error => {
+                            // console.log("got error with requestStream"); // debug
+                            console.error(error);
+                        },
+                        onComplete: () => {
+                            // console.log("requestStream completed"); // debug
+                        }
+                    });
+                },
+                onError: error => {
+                    console.error(error);
+                },
+                // onSubscribe: cancel => {
+                // }
+            });
+
+        },
         computed:{
             {{#if (isSelectedSecurity selectedSecurity)}}
             userRoles() {
@@ -393,6 +473,7 @@ path: frontend/src/components
 
 
 <function>
+
     window.$HandleBars.registerHelper('checkCommandPut', function (info, options) {
         if(info.endsWith('PUT')){
             return options.fn(this);
@@ -507,23 +588,23 @@ path: frontend/src/components
     })
 
     window.$HandleBars.registerHelper('isSelectedSecurity', function (selectedSecurity) {
-		try{
-			if(!selectedSecurity)
-				return false;
+        try{
+            if(!selectedSecurity)
+                return false;
 
-			if(selectedSecurity == 'isKeycloakSecurity'){
-				return true;
-			}
+            if(selectedSecurity == 'isKeycloakSecurity'){
+                return true;
+            }
 
-			return;
-		} catch(e){
-		    console.log(e)
-		}
-  	});
+            return;
+        } catch(e){
+            console.log(e)
+        }
+    });
 
     window.$HandleBars.registerHelper('hasRestRepository', function (commands) {
-		try{
-			if(commands == "undefined") {
+        try{
+            if(commands == "undefined") {
                 return options.fn(this);
             }
             var hasRestRepository = false;
@@ -535,11 +616,11 @@ path: frontend/src/components
                 }
             }
 
-			return hasRestRepository;
-		} catch(e){
-		    console.log(e)
-		}
-  	});
+            return hasRestRepository;
+        } catch(e){
+            console.log(e)
+        }
+    });
 
     window.$HandleBars.registerHelper('attachedActorName', function (actorName, options) {
         try {
@@ -694,3 +775,4 @@ path: frontend/src/components
     })
 
 </function>
+
