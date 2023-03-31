@@ -47,9 +47,8 @@ fileName: App.vue
             </v-app-bar>
 
             <v-navigation-drawer app clipped flat v-model="sideBar">
+                {{#boundedContexts}}
                 <v-list>
-                
-                    {{#boundedContexts}}
                     <v-list-group>
                         <template v-slot:activator>
                             <v-list-item-content>
@@ -82,8 +81,8 @@ fileName: App.vue
                         </v-list-item>
                         {{/viewes}}
                     </v-list-group>
-                    {{/boundedContexts}}
                 </v-list>
+                {{/boundedContexts}}
             </v-navigation-drawer>
         </div>
 
