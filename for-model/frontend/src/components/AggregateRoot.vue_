@@ -17,7 +17,7 @@ path: frontend/src/components
             {{namePascalCase}} # \{{value._links.self.href.split("/")[value._links.self.href.split("/").length - 1]}}
         </v-card-title >
         <v-card-title v-else>
-            {{namePascalCase}}
+            {{boundedContext.name}}
         </v-card-title >
 
         <v-card-text>

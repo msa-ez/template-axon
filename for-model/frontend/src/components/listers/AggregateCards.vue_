@@ -28,7 +28,7 @@ path: frontend/src/components/listers
 
 
         {{#if (checkGeneralization aggregateRoot.entities.relations nameCamelCase)}}
-        <h1 style = "margin-left:4.5%; margin-top:-10px; cursor:pointer;" @click="load">{{namePascalCase}}</h1>
+        <h1 style = "position:absolute; left:23px; top:15px; cursor:pointer;" @click="load">{{namePascalCase}}</h1>
         <v-select
                 label="TYPE"
                 :items="btnList"
@@ -36,7 +36,7 @@ path: frontend/src/components/listers
                 style="margin-left:4.5%; width:300px;"
         ></v-select>
         {{else}}
-        <h1 style = "margin-left:4.5%; margin-top:-10px;">{{namePascalCase}}</h1>
+        <h1 style = "position:absolute; left:23px; top:15px;">{{namePascalCase}}</h1>
         {{/if}}
         <v-col style="margin-bottom:40px;">
             <div class="text-center">
