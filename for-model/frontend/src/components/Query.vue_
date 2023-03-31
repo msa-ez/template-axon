@@ -10,7 +10,7 @@ except: {{#ifEquals dataProjection "query-for-aggregate"}}false{{else}}true{{/if
         <v-card-title>
             {{namePascalCase}}
         </v-card-title>
-
+    
         <v-card-text>
             <v-row style="margin-top: 15px;">
                 {{#queryParameters}}
@@ -28,7 +28,7 @@ except: {{#ifEquals dataProjection "query-for-aggregate"}}false{{else}}true{{/if
                 {{/checkListOfEntityMember}}
                 {{/if}}
                 {{/queryParameters}}
-            <v-row>
+            </v-row>
         </v-card-text>
 
         <v-card-actions>
