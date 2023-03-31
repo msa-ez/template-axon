@@ -15,21 +15,20 @@ except: {{#ifEquals dataProjection "query-for-aggregate"}}false{{else}}true{{/if
             <v-row style="margin-top: 15px;">
                 {{#queryParameters}}
                 {{#if (isPrimitive className)}}
-                    <{{getPrimitiveType className}} class="attributes-list" label="{{namePascalCase}}" v-model="value.parameters.{{nameCamelCase}}" :editMode="editMode"/>
+                <{{getPrimitiveType className}} class="attributes-list" label="{{namePascalCase}}" v-model="value.parameters.{{nameCamelCase}}" :editMode="editMode"/>
                 {{else}}
                 {{#checkVO className}}
-                    <{{className}} offline label="{{namePascalCase}}" v-model="value.parameters.{{nameCamelCase}}" :editMode="editMode" @change="change"/>
+                <{{className}} offline label="{{namePascalCase}}" v-model="value.parameters.{{nameCamelCase}}" :editMode="editMode" @change="change"/>
                 {{/checkVO}}
                 {{#checkEntityMember className}}
-                    <{{className}} offline label="{{namePascalCase}}" v-model="value.parameters.{{nameCamelCase}}" :editMode="editMode" @change="change"/>
+                <{{className}} offline label="{{namePascalCase}}" v-model="value.parameters.{{nameCamelCase}}" :editMode="editMode" @change="change"/>
                 {{/checkEntityMember}}
                 {{#checkListOfEntityMember className}}
-                    <{{getEntityClassNameOfList className}}List offline label="{{namePascalCase}}" v-model="value.parameters.{{nameCamelCase}}" :editMode="editMode" @change="change"/>
+                <{{getEntityClassNameOfList className}}List offline label="{{namePascalCase}}" v-model="value.parameters.{{nameCamelCase}}" :editMode="editMode" @change="change"/>
                 {{/checkListOfEntityMember}}
                 {{/if}}
                 {{/queryParameters}}
             <v-row>
-        
         </v-card-text>
 
         <v-card-actions>
