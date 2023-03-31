@@ -48,38 +48,40 @@ fileName: App.vue
 
             <v-navigation-drawer app clipped flat v-model="sideBar">
                 <v-list>
-
                     {{#boundedContexts}}
-    {{#aggregates}}
+                    <v-list-group>
+                        <template v-slot:activator>
+                            <v-list-item-content>
+                                <v-list-item-title>{{boundedContext.name}}</v-list-item-title>
+                            </v-list-item-content>
+                        </template>
 
-                    <v-list-item
-                        class="px-2"
-                        key="{{namePlural}}"
-                        to="/{{namePlural}}"
-                        @click="changeUrl()"
-                        color="deep-purple lighten-2"
-                        style="font-weight:700;"
-                    >
-                        {{namePascalCase}}
-                    </v-list-item>
-
-    {{/aggregates}}
-
-    {{#viewes}}
-                    <v-list-item
-                        class="px-2"
-                        key="{{namePlural}}"
-                        to="{{namePlural}}"
-                        @click="changeUrl()"
-                        color="deep-purple lighten-2"
-                        style="font-weight:700;"
-                    >
-                        {{namePascalCase}}
-                    </v-list-item>
-    {{/viewes}}
-{{/boundedContexts}}
-
-
+                        {{#aggregates}}
+                        <v-list-item
+                            class="px-2"
+                            key="{{namePlural}}"
+                            to="/{{namePlural}}"
+                            @click="changeUrl()"
+                            color="deep-purple lighten-2"
+                            style="font-weight:700;"
+                        >
+                            {{namePascalCase}}
+                        </v-list-item>
+                        {{/aggregates}}
+                        {{#viewes}}
+                        <v-list-item
+                            class="px-2"
+                            key="{{namePlural}}"
+                            to="{{namePlural}}"
+                            @click="changeUrl()"
+                            color="deep-purple lighten-2"
+                            style="font-weight:700;"
+                        >
+                            {{namePascalCase}}
+                        </v-list-item>
+                        {{/viewes}}
+                    </v-list-group>
+                    {{/boundedContexts}}
                 </v-list>
             </v-navigation-drawer>
         </div>
