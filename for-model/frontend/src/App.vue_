@@ -48,6 +48,7 @@ fileName: App.vue
 
             <v-navigation-drawer app clipped flat v-model="sideBar">
                 <v-list>
+                <div>{{boundedContext.name}}</div>
                     {{#boundedContexts}}
                     <v-list-group>
                         <template v-slot:activator>
