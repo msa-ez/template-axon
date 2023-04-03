@@ -1,10 +1,12 @@
+forEach: Model
+
 fileName: String.vue
 path: frontend/src/components/primitives
 ---
 <template>
     <div>
         <div v-if="editMode" style="margin-top:-20px;">
-            <div style="font-size: 16px; font-weight:700;">{{label}}</div>
+            <div style="font-size: 16px; font-weight:700;">\{{label}}</div>
             <v-text-field 
                 v-model="value"
                 @change="change"
@@ -13,7 +15,7 @@ path: frontend/src/components/primitives
             />
         </div>
         <div v-else>
-            {{label}} :  {{value}}
+            \{{label}} : \{{value}}
         </div>
     </div>
 </template>
