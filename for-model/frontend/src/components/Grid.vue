@@ -1,6 +1,3 @@
-fileName: Grid.vue
-path: frontend/src/components
----
 <template>
     <div class="container-fluid">
         <div class="row">
@@ -57,7 +54,6 @@ path: frontend/src/components
 
             <wj-flex-grid-filter
                     :filterColumns="['id', 'date', 'time', 'countryId', 'productId', 'colorId', 'price', 'change', 'discount', 'rating', 'active']" />
-
             <wj-flex-grid-column binding="id" header="UserName" :width="140" :isReadOnly="true" align="center"/>
             <wj-flex-grid-column binding="id" header="UserId" format="MMM d yyyy" :isRequired="false" :width="110" align="center"
                 :editor="editors.inputDate">
@@ -65,34 +61,13 @@ path: frontend/src/components
             <wj-flex-grid-column binding="countryId" header="Department" :dataMap="countryMap" :width="150" align="center">
                 <wj-flex-grid-cell-template cellType="Cell" v-slot="cell">
                     <span :class="'flag-icon flag-icon-' + getCountry(cell.item).flag"></span>
-                    {{getCountry(cell.item).name}}
                 </wj-flex-grid-cell-template>
             </wj-flex-grid-column>
             <wj-flex-grid-column binding="id" header="Position" :isRequired="false" :width="140" align="center"/>
             <wj-flex-grid-column binding="id" header="PhoneNo" :width="140" align="center"/>
-            <!-- </wj-flex-grid-column> -->
             <wj-flex-grid-column binding="date" header="ResgisterDate" format="MMM d yyyy" :width="180" align="center"/>
-                <!-- <wj-flex-grid-cell-template cellType="Cell" v-slot="cell">
-                <span :class="getChangeCls(cell.item.change)">
-                    {{cell.item.change | safeCurrency}}
-                </span>
-                </wj-flex-grid-cell-template>
-            </wj-flex-grid-column> -->
             <wj-flex-grid-column binding="active" header="Manager" :width="140" align="center">
             </wj-flex-grid-column>
-            <!-- <wj-flex-grid-column binding="time" header="Time" format="HH:mm" :isRequired="false" :width="95"
-                :editor="editors.inputTime">
-            </wj-flex-grid-column>
-            <wj-flex-grid-column binding="colorId" header="Color" :dataMap="colorMap" :width="145">
-                <wj-flex-grid-cell-template cellType="Cell" v-slot="cell">
-                    <span class="color-tile" :style="{background: getColor(cell.item).value}"></span>
-                    {{getColor(cell.item).value}}
-                </wj-flex-grid-cell-template>
-            </wj-flex-grid-column>
-            <wj-flex-grid-column binding="productId" header="Product" :dataMap="productMap" :width="145" />
-            <wj-flex-grid-column binding="discount" header="Discount" format="p0" :width="130" />
-            <wj-flex-grid-column binding="active" header="Active" :width="100" /> -->
-
         </wj-flex-grid>
     </div>
 </template>
