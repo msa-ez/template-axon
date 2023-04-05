@@ -1,3 +1,7 @@
+forEach: ValueObject
+fileName: Grid.vue
+path: frontend/src/components
+---
 <template>
     <div class="container-fluid">
         <div class="row">
