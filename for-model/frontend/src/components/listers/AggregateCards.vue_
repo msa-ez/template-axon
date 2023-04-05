@@ -1,32 +1,13 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 forEach: Aggregate
 fileName: {{namePascalCase}}Cards.vue
 path: frontend/src/components/listers
 ---
 <template>
     <div>
-
-
-
         {{#contexts.views}}
             <{{namePascalCase}}Query @search="search"></{{namePascalCase}}Query>
         {{/contexts.views}}
-
-
+        <Grid></Grid>
         {{#if (checkGeneralization aggregateRoot.entities.relations nameCamelCase)}}
         <h1 style = "position:absolute; left:23px; top:15px; cursor:pointer;" @click="load">{{namePascalCase}}</h1>
         <v-select
@@ -54,7 +35,6 @@ path: frontend/src/components/listers
                     <{{namePascalCase}} :offline="offline" class="video-card" :isNew="true" :editMode="true" v-model="newValue" 
                             @add="append" v-if="tick"/>
                     {{/if}}
-
                     <v-btn
                             style="postition:absolute; top:2%; right:2%"
                             @click="closeDialog()"
@@ -65,7 +45,6 @@ path: frontend/src/components/listers
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-dialog>
-
                 {{#if (checkGeneralization aggregateRoot.entities.relations nameCamelCase)}}
                 <v-speed-dial v-model="btnDialog" style="position: absolute; bottom: 5%; right: 2%; z-index:99">
                     <template v-slot:activator>
@@ -113,11 +92,13 @@ path: frontend/src/components/listers
 
     const axios = require('axios').default;
     import {{namePascalCase}} from './../{{namePascalCase}}.vue';
+    import Grid from '../../../grid/app.vue';
 
     export default {
         name: '{{namePascalCase}}Manager',
         components: {
             {{namePascalCase}},
+            Grid
         },
         props: {
             offline: Boolean
