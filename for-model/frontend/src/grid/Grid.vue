@@ -111,7 +111,7 @@ import { Country, DataService, KeyValue } from "./data";
 import { ExportService } from "./export";
 
 export default {
-    el: "#app",
+    el: "#Grid",
     data: function() {
         return {
             itemsCount: 500,

@@ -4,11 +4,13 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import Managing from "./components";
 import router from './router';
+import ExcelExportButton from "./grid/export-btn.vue";
 {{#if (isSelectedSecurity selectedSecurity)}}
 import Keycloak from 'keycloak-js'
 {{else}}
 {{/if}}
 Vue.config.productionTip = false;
+Vue.component("excel-export-button", ExcelExportButton);
 
 const axios = require("axios").default;
 
