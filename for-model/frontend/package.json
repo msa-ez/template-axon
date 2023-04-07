@@ -12,11 +12,12 @@ path: for-model/frontend
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@grapecity/wijmo.vue2.all": "^5.20222.877",
+    "@grapecity/wijmo.styles": "^5.20222.877",
+    "@grapecity/wijmo.vue2.all": "5.20222.877-rc",
     "axios": "^0.26.0",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^5.2.3",
     "core-js": "^3.6.5",
-    "jszip": "3.1.3",
+    "jszip": "3.10.1",
     "rsocket-core": "0.0.25",
     "rsocket-flowable": "0.0.25",
     "rsocket-websocket-client": "0.0.25",
@@ -28,20 +29,22 @@ path: for-model/frontend
     "vue": "^2.6.11",
     "vue-router": "^3.4.3",
     "vue2-google-maps": "^0.10.7",
-    "vuetify": "^2.6.0",
-    "xmldom": "0.1.27"
+    "vuetify": "^2.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.15",
     "@vue/cli-plugin-eslint": "~4.5.15",
     "@vue/cli-service": "~4.5.15",
     "babel-eslint": "^10.1.0",
-    "bootstrap-css": "^4.0.0-alpha.5",
+    "babel-loader": "^9.1.2",
+    "browser-sync": "2.27.7",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "lite-server": "2.4.0",
     "sass": "~1.32.0",
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-vuetify": "~2.4.7",
+    "vue-loader": "^17.0.1",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.7.0"
   },
