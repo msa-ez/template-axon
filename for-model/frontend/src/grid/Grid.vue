@@ -62,7 +62,6 @@
             <wj-flex-grid-column binding="countryId" header="Country" :dataMap="countryMap" :width="145">
                 <wj-flex-grid-cell-template cellType="Cell" v-slot="cell">
                     <span :class="'flag-icon flag-icon-' + getCountry(cell.item).flag"></span>
-                    {{getCountry(cell.item).name}}
                 </wj-flex-grid-cell-template>
             </wj-flex-grid-column>
             <wj-flex-grid-column binding="price" header="Price" format="c" :isRequired="false" :width="100"/>
@@ -72,7 +71,6 @@
             <wj-flex-grid-column binding="change" header="Change" align="right" :width="115">
                 <wj-flex-grid-cell-template cellType="Cell" v-slot="cell">
                 <span :class="getChangeCls(cell.item.change)">
-                    {{cell.item.change | safeCurrency}}
                 </span>
                 </wj-flex-grid-cell-template>
             </wj-flex-grid-column>
@@ -85,7 +83,6 @@
             <wj-flex-grid-column binding="colorId" header="Color" :dataMap="colorMap" :width="145">
                 <wj-flex-grid-cell-template cellType="Cell" v-slot="cell">
                     <span class="color-tile" :style="{background: getColor(cell.item).value}"></span>
-                    {{getColor(cell.item).value}}
                 </wj-flex-grid-cell-template>
             </wj-flex-grid-column>
             <wj-flex-grid-column binding="productId" header="Product" :dataMap="productMap" :width="145" />

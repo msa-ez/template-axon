@@ -1,7 +1,6 @@
 <template>
     <button class="btn btn-default btn-block" :disabled="preparing" @click="exportToExcel">
         <span v-if="!exporting">Export To Excel</span>
-        <span v-else>Cancel ({{progress | percent}} done)</span>
     </button>
 </template>
 
