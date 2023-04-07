@@ -1,3 +1,7 @@
+forEach: Aggregate
+fileName: Grid.vue
+path: frontend/src/grid
+---
 <template>
     <div class="container-fluid">
         <div class="row">
@@ -52,8 +56,7 @@
                 :initialized="gridInitialized"
         >
 
-            <wj-flex-grid-filter
-                    :filterColumns="['id', 'date', 'time', 'countryId', 'productId', 'colorId', 'price', 'change', 'discount', 'rating', 'active']" />
+            <wj-flex-grid-filter :filterColumns="[{{#aggregateRoot.fieldDescriptors}}'{{namePascalCase}}',{{/aggregateRoot.fieldDescriptors}}]" />
 
             <wj-flex-grid-column binding="id" header="ID" :width="70" :isReadOnly="true" />
             <wj-flex-grid-column binding="date" header="Date" format="MMM d yyyy" :isRequired="false" :width="130"
