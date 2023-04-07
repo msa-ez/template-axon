@@ -92,7 +92,7 @@ path: frontend/src/components/listers
 
     const axios = require('axios').default;
     import {{namePascalCase}} from './../{{namePascalCase}}.vue';
-    import Grid from './../Grid.vue';
+    import Grid from '../../gird/Grid.vue';
 
     export default {
         name: '{{namePascalCase}}Manager',
