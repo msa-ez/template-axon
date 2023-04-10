@@ -7,9 +7,9 @@ path: frontend/src/components
     <v-card style="width:450px;" outlined>
         <template slot="progress">
             <v-progress-linear
-                    color="deep-purple"
-                    height="10"
-                    indeterminate
+                color="deep-purple"
+                height="10"
+                indeterminate
             ></v-progress-linear>
         </template>
 
@@ -24,7 +24,7 @@ path: frontend/src/components
         {{#aggregateRoot.fieldDescriptors}}
         {{#if (isNotId nameCamelCase)}}
         {{#if (isPrimitive className)}}
-            <{{getPrimitiveType className}} label="{{namePascalCase}}" v-model="value.{{nameCamelCase}}" :editMode="editMode"/>
+        <{{getPrimitiveType className}} label="{{namePascalCase}}" v-model="value.{{nameCamelCase}}" :editMode="editMode"/>
         {{else}}
             {{#checkVO className}}
             <{{className}} offline label="{{namePascalCase}}" v-model="value.{{nameCamelCase}}" :editMode="editMode" @change="change"/>
@@ -38,7 +38,6 @@ path: frontend/src/components
         {{/if}}
         {{/if}}
         {{/aggregateRoot.fieldDescriptors}}
-
             <EventViewer
                 v-if="value._links && value._links.events"
                 :src="value._links.events.href"
@@ -49,18 +48,18 @@ path: frontend/src/components
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-                    color="deep-purple lighten-2"
-                    text
-                    @click="edit"
-                    v-if="!editMode"
+                color="deep-purple lighten-2"
+                text
+                @click="edit"
+                v-if="!editMode"
             >
                 Edit
             </v-btn>
             <v-btn
-                    color="deep-purple lighten-2"
-                    text
-                    @click="save"
-                    v-else
+                color="deep-purple lighten-2"
+                text
+                @click="save"
+                v-else
             >
             {{#if (hasRestRepository commands)}}
             {{#commands}}
@@ -73,18 +72,18 @@ path: frontend/src/components
             {{/if}}
             </v-btn>
             <v-btn
-                    color="deep-purple lighten-2"
-                    text
-                    @click="remove"
-                    v-if="!editMode"
+                color="deep-purple lighten-2"
+                text
+                @click="remove"
+                v-if="!editMode"
             >
                 Delete
             </v-btn>
             <v-btn
-                    color="deep-purple lighten-2"
-                    text
-                    @click="editMode = false"
-                    v-if="editMode && !isNew"
+                color="deep-purple lighten-2"
+                text
+                @click="editMode = false"
+                v-if="editMode && !isNew"
             >
                 Cancel
             </v-btn>
@@ -95,26 +94,26 @@ path: frontend/src/components
             {{#commands}}
             {{^isRestRepository}}
             <v-btn  
-                    {{#if (attachedActorName actorName)}}
-                    :disabled="!userRoles.includes('{{actorName}}')"
-                    {{else}}
-                    {{/if}}
-                    v-if="!editMode"
-                    color="deep-purple lighten-2"
-                    text
-                    {{#if (checkParam fieldDescriptors)}}
-                    @click="open{{namePascalCase}}"
-                    {{else}}
-                    @click="{{nameCamelCase}}"
-                    {{/if}}
+                {{#if (attachedActorName actorName)}}
+                :disabled="!userRoles.includes('{{actorName}}')"
+                {{else}}
+                {{/if}}
+                v-if="!editMode"
+                color="deep-purple lighten-2"
+                text
+                {{#if (checkParam fieldDescriptors)}}
+                @click="open{{namePascalCase}}"
+                {{else}}
+                @click="{{nameCamelCase}}"
+                {{/if}}
             >
                 {{namePascalCase}}
             </v-btn>
             {{#if (checkParam fieldDescriptors)}}
             <v-dialog v-model="{{nameCamelCase}}Diagram" width="500">
                 <{{namePascalCase}}Command
-                        @closeDialog="close{{namePascalCase}}"
-                        @{{nameCamelCase}}="{{nameCamelCase}}"
+                    @closeDialog="close{{namePascalCase}}"
+                    @{{nameCamelCase}}="{{nameCamelCase}}"
                 ></{{namePascalCase}}Command>
             </v-dialog>
             {{/if}}
@@ -124,22 +123,22 @@ path: frontend/src/components
             {{#commands}}
             {{^isRestRepository}}
             <v-btn
-                    v-if="!editMode"
-                    color="deep-purple lighten-2"
-                    text
-                    {{#if (checkParam fieldDescriptors)}}
-                    @click="open{{namePascalCase}}"
-                    {{else}}
-                    @click="{{nameCamelCase}}"
-                    {{/if}}
+                v-if="!editMode"
+                color="deep-purple lighten-2"
+                text
+                {{#if (checkParam fieldDescriptors)}}
+                @click="open{{namePascalCase}}"
+                {{else}}
+                @click="{{nameCamelCase}}"
+                {{/if}}
             >
                 {{namePascalCase}}
             </v-btn>
             {{#if (checkParam fieldDescriptors)}}
             <v-dialog v-model="{{nameCamelCase}}Diagram" width="500">
                 <{{namePascalCase}}Command
-                        @closeDialog="close{{namePascalCase}}"
-                        @{{nameCamelCase}}="{{nameCamelCase}}"
+                    @closeDialog="close{{namePascalCase}}"
+                    @{{nameCamelCase}}="{{nameCamelCase}}"
                 ></{{namePascalCase}}Command>
             </v-dialog>
             {{/if}}
@@ -149,10 +148,10 @@ path: frontend/src/components
         </v-card-actions>
 
         <v-snackbar
-                v-model="snackbar.status"
-                :top="true"
-                :timeout="snackbar.timeout"
-                color="error"
+            v-model="snackbar.status"
+            :top="true"
+            :timeout="snackbar.timeout"
+            color="error"
         >
             \{{ snackbar.text }}
             <v-btn dark text @click="snackbar.status = false">
@@ -160,7 +159,6 @@ path: frontend/src/components
             </v-btn>
         </v-snackbar>
     </v-card>
-
 </template>
 
 <script>
@@ -169,7 +167,6 @@ path: frontend/src/components
     import { RSocketClient } from 'rsocket-core';
     import RSocketWebSocketClient from 'rsocket-websocket-client';
     import { IdentitySerializer, JsonSerializer } from "rsocket-core/build";
-
 
     {{#aggregateRoot.fieldDescriptors}}
     {{#if (isNotId nameCamelCase)}}

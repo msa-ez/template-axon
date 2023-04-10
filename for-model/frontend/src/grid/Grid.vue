@@ -45,17 +45,16 @@ path: frontend/src/grid
 
         <!-- the grid -->
         <wj-flex-grid
-                :autoGenerateColumns="false"
-                :allowAddNew="true"
-                :allowDelete="true"
-                :allowPinning="'SingleColumn'"
-                :newRowAtTop="true"
-                :showMarquee="true"
-                :selectionMode="'MultiRange'"
-                :validateEdits="false"
-                :initialized="gridInitialized"
+            :autoGenerateColumns="false"
+            :allowAddNew="true"
+            :allowDelete="true"
+            :allowPinning="'SingleColumn'"
+            :newRowAtTop="true"
+            :showMarquee="true"
+            :selectionMode="'MultiRange'"
+            :validateEdits="false"
+            :initialized="gridInitialized"
         >
-
             <wj-flex-grid-filter :filterColumns="[{{#aggregateRoot.fieldDescriptors}}'{{namePascalCase}}',{{/aggregateRoot.fieldDescriptors}}]" />
 
             <wj-flex-grid-column binding="id" header="ID" :width="70" :isReadOnly="true" />
@@ -91,7 +90,6 @@ path: frontend/src/grid
             <wj-flex-grid-column binding="productId" header="Product" :dataMap="productMap" :width="145" />
             <wj-flex-grid-column binding="discount" header="Discount" format="p0" :width="130" />
             <wj-flex-grid-column binding="active" header="Active" :width="100" />
-
         </wj-flex-grid>
     </div>
 </template>

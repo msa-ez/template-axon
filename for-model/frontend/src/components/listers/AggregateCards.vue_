@@ -5,7 +5,7 @@ path: frontend/src/components/listers
 <template>
     <div>
         {{#contexts.views}}
-            <{{namePascalCase}}Query @search="search"></{{namePascalCase}}Query>
+        <{{namePascalCase}}Query @search="search"></{{namePascalCase}}Query>
         {{/contexts.views}}
         <Grid></Grid>
         {{#if (checkGeneralization aggregateRoot.entities.relations nameCamelCase)}}
