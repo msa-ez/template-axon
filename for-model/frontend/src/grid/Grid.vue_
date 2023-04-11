@@ -80,6 +80,9 @@ import { ExportService } from "./export";
 
 export default {
     el: "#Grid",
+    props: {
+        employeesData: Array,
+    },
     data: function() {
         return {
             itemsCount: 500,
@@ -235,6 +238,9 @@ export default {
         },
     },
     watch: {
+        employeesData: function (){
+            this.data = this.getData()
+        },
         itemsCount: function (itemsCount) {
             this.flex.itemsSource.collectionChanged.removeAllHandlers();
 
