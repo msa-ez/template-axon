@@ -53,7 +53,8 @@ path: frontend/src/grid
             :showMarquee="true"
             :selectionMode="'MultiRange'"
             :validateEdits="false"
-            :initialized="gridInitialized"
+            :itemsSource="data"
+            :initialized="flexInitialized"
         >
             <wj-flex-grid-filter :filterColumns="[{{#aggregateRoot.fieldDescriptors}}'{{namePascalCase}}',{{/aggregateRoot.fieldDescriptors}}]" />
 
@@ -77,6 +78,7 @@ import { DataMap } from '@grapecity/wijmo.grid';
 import { CellMaker, SparklineMarkers } from '@grapecity/wijmo.grid.cellmaker';
 import { Country, DataService, KeyValue } from "./data";
 import { ExportService } from "./export";
+import * as wjcCore from "@grapecity/wijmo";
 
 export default {
     el: "#Grid",
@@ -86,6 +88,7 @@ export default {
     data: function() {
         return {
             itemsCount: 500,
+            data: null,
 
             // editors
             editors: {
