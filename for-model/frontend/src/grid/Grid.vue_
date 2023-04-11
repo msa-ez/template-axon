@@ -5,30 +5,6 @@ path: frontend/src/grid
 <template>
     <div class="container-fluid">
         <div class="row">
-            <!-- search box -->
-            <div class="toolbar-item col-sm-3 col-md-5">
-                <wj-flex-grid-search
-                    placeholder="Search"
-                    cssMatch=""
-                    :initialized="searchInitialized"
-                />
-            </div>
-
-            <!-- data size -->
-            <div class="toolbar-item col-sm-3 col-md-3">
-                <div class="input-group">
-                    <span class="input-group-addon">Items:</span>
-                    <select class="form-control" v-model="itemsCount">
-                        <option value="5">5</option>
-                        <option value="50">50</option>
-                        <option value="500">500</option>
-                        <option value="5000">5,000</option>
-                        <option value="50000">50,000</option>
-                        <option value="100000">100,000</option>
-                    </select>
-                </div>
-            </div>
-
             <!-- export to Excel -->
             <div class="toolbar-item col-sm-3 col-md-2">
                 <excel-export-button :exportService="this.exportService" :getFlex="getFlex" />
@@ -70,7 +46,6 @@ import '@grapecity/wijmo.touch';
 import '@grapecity/wijmo.vue2.grid';
 import '@grapecity/wijmo.vue2.grid.grouppanel';
 import '@grapecity/wijmo.vue2.grid.filter'
-import "@grapecity/wijmo.vue2.grid.search";
 import '@grapecity/wijmo.vue2.input';
 import * as wjCore from '@grapecity/wijmo';
 import { InputDate, InputTime } from "@grapecity/wijmo.input";
@@ -87,7 +62,6 @@ export default {
     },
     data: function() {
         return {
-            itemsCount: 500,
             data: null,
 
             // editors
@@ -106,7 +80,6 @@ export default {
     created: function () {
         this.dataService = new DataService();
         this.exportService = new ExportService();
-        this._lastId = this.itemsCount;
         // initializes data maps
         this._productMap = this._buildDataMap(this.dataService.getProducts());
         this._countryMap = new DataMap(this.dataService.getCountries(), 'id', 'name');
@@ -150,22 +123,6 @@ export default {
                 });
             }
             return data;
-        },
-        gridInitialized: function (ctl) {
-            this.flex = ctl;
-            this.flex.itemsSource = this._createItemsSource(this.itemsCount);
-            if (this.groupPanel) {
-                this.groupPanel.grid = this.flex;
-            }
-            if (this.search) {
-                this.search.grid = this.flex;
-            }
-        },
-        searchInitialized: function (ctl) {
-            this.search = ctl;
-            if (this.flex) {
-                this.search.grid = this.flex;
-            }
         },
         groupPanelInitialized: function (ctl) {
             this.groupPanel = ctl;
@@ -244,12 +201,6 @@ export default {
         employeesData: function (){
             this.data = this.getData()
         },
-        itemsCount: function (itemsCount) {
-            this.flex.itemsSource.collectionChanged.removeAllHandlers();
-
-            this._lastId = itemsCount;
-            this.flex.itemsSource = this._createItemsSource(itemsCount);
-        },
     },
     filters: {
         safeCurrency: function (value) {
@@ -277,10 +228,6 @@ export default {
 
     .toolbar-item {
         margin-bottom: 6px;
-    }
-
-    .wj-flexgridsearch {
-        width: 100%;
     }
 
     .wj-flexgrid {
