@@ -57,39 +57,9 @@ path: frontend/src/grid
         >
             <wj-flex-grid-filter :filterColumns="[{{#aggregateRoot.fieldDescriptors}}'{{namePascalCase}}',{{/aggregateRoot.fieldDescriptors}}]" />
 
-            <wj-flex-grid-column binding="id" header="ID" :width="70" :isReadOnly="true" />
-            <wj-flex-grid-column binding="date" header="Date" format="MMM d yyyy" :isRequired="false" :width="130"
-                :editor="editors.inputDate">
-            </wj-flex-grid-column>
-            <wj-flex-grid-column binding="countryId" header="Country" :dataMap="countryMap" :width="145">
-                <wj-flex-grid-cell-template cellType="Cell" v-slot="cell">
-                    <span :class="'flag-icon flag-icon-' + getCountry(cell.item).flag"></span>
-                </wj-flex-grid-cell-template>
-            </wj-flex-grid-column>
-            <wj-flex-grid-column binding="price" header="Price" format="c" :isRequired="false" :width="100"/>
-            <wj-flex-grid-column binding="history" header="History" :width="180" align="center" 
-                :allowSorting="false" :cellTemplate="historyCellTemplate">
-            </wj-flex-grid-column>
-            <wj-flex-grid-column binding="change" header="Change" align="right" :width="115">
-                <wj-flex-grid-cell-template cellType="Cell" v-slot="cell">
-                <span :class="getChangeCls(cell.item.change)">
-                </span>
-                </wj-flex-grid-cell-template>
-            </wj-flex-grid-column>
-            <wj-flex-grid-column binding="rating" header="Rating" :width="180" align="center" cssClass="cell-rating"
-                                 :cellTemplate="ratingCellTemplate">
-            </wj-flex-grid-column>
-            <wj-flex-grid-column binding="time" header="Time" format="HH:mm" :isRequired="false" :width="95"
-                :editor="editors.inputTime">
-            </wj-flex-grid-column>
-            <wj-flex-grid-column binding="colorId" header="Color" :dataMap="colorMap" :width="145">
-                <wj-flex-grid-cell-template cellType="Cell" v-slot="cell">
-                    <span class="color-tile" :style="{background: getColor(cell.item).value}"></span>
-                </wj-flex-grid-cell-template>
-            </wj-flex-grid-column>
-            <wj-flex-grid-column binding="productId" header="Product" :dataMap="productMap" :width="145" />
-            <wj-flex-grid-column binding="discount" header="Discount" format="p0" :width="130" />
-            <wj-flex-grid-column binding="active" header="Active" :width="100" />
+            {{#aggregateRoot.fieldDescriptors}}
+            <wj-flex-grid-column binding="{{namePascalCase}}" header="{{namePascalCase}}" width="2*" :isReadOnly="true" />
+            {{/aggregateRoot.fieldDescriptors}}
         </wj-flex-grid>
     </div>
 </template>
@@ -150,6 +120,31 @@ export default {
         this.exportService.cancelExcelExport();
     },
     methods: {
+        flexInitialized: function(flexgrid) {
+            this.flex = flexgrid;
+            // sort the data by country
+            let sd = new wjcCore.SortDescription("country", true);
+            flexgrid.collectionView.sortDescriptions.push(sd);
+            flexgrid.collectionView.currentChanged.addHandler(
+                this._updateCurrentInfo.bind(this)
+            );
+            this._updateCurrentInfo();
+        },
+        getData: function() {
+            var me = this
+            // create some random data
+            let countries = me.employeesData,
+                data = [];
+            for (let i = 0; i < countries.length; i++) {
+                data.push({
+                    id: i,
+                    {{#aggregateRoot.fieldDescriptors}}
+                    {{namePascalCase}}: countries[i].{{nameCamelCase}},
+                    {{/aggregateRoot.fieldDescriptors}}
+                });
+            }
+            return data;
+        },
         gridInitialized: function (ctl) {
             this.flex = ctl;
             this.flex.itemsSource = this._createItemsSource(this.itemsCount);

@@ -7,7 +7,7 @@ path: frontend/src/components/listers
         {{#contexts.views}}
         <{{namePascalCase}}Query @search="search"></{{namePascalCase}}Query>
         {{/contexts.views}}
-        <Grid></Grid>
+        <Grid :employeesData="values"></Grid>
         {{#if (checkGeneralization aggregateRoot.entities.relations nameCamelCase)}}
         <h1 style = "position:absolute; left:23px; top:15px; cursor:pointer;" @click="load">{{namePascalCase}}</h1>
         <v-select
@@ -95,7 +95,7 @@ path: frontend/src/components/listers
     import Grid from '../../grid/Grid.vue';
 
     export default {
-        name: '{{namePascalCase}}Manager',
+        name: '{{namePascalCase}}Cards',
         components: {
             {{namePascalCase}},
             Grid
