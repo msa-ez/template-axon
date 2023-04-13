@@ -51,7 +51,7 @@ import * as wjCore from '@grapecity/wijmo';
 import { InputDate, InputTime } from "@grapecity/wijmo.input";
 import { DataMap } from '@grapecity/wijmo.grid';
 import { CellMaker, SparklineMarkers } from '@grapecity/wijmo.grid.cellmaker';
-import { Country, DataService, KeyValue } from "./data";
+import { DataService } from "./data";
 import { ExportService } from "./export";
 import * as wjcCore from "@grapecity/wijmo";
 
