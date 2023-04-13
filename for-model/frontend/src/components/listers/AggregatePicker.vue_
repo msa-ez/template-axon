@@ -96,9 +96,8 @@ path: frontend/src/components/listers
             select(val) {
                 var obj = {}
                 if(val != undefined) {
-                    var arr = this.list[val]._links.self.href.split('/');
                     {{#aggregateRoot.fieldDescriptors}}
-                    {{#isKey}}obj['{{nameCamelCase}}'] = arr[4]; {{/isKey}}
+                    {{#isKey}}obj['{{nameCamelCase}}'] = this.list[val].{{nameCamelCase}}; {{/isKey}}
                     {{#isName}}obj['nameField'] = this.list[val].{{nameCamelCase}}; {{/isName}}
                     {{/aggregateRoot.fieldDescriptors}}
                     this.$emit('selected', obj);

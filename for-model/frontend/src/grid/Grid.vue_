@@ -137,14 +137,6 @@ export default {
                 historyCellTemplate: this.historyCellTemplate
             });
         },
-        getCountry: function (item) {
-            const country = this._countryMap.getDataItem(item.countryId);
-            return country ? country : Country.NotFound;
-        },
-        getColor: function (item) {
-            const color = this._colorMap.getDataItem(item.colorId);
-            return color ? color : KeyValue.NotFound;
-        },
         getChangeCls: function (value) {
             if (wjCore.isNumber(value)) {
                 if (value > 0) {
