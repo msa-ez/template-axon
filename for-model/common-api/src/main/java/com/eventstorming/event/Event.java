@@ -7,7 +7,6 @@ package {{options.package}}.event;
 
 import lombok.Data;
 import lombok.ToString;
-import {{options.package}}.query.{{className}}
 
 {{#checkDateType fieldDescriptors}} {{/checkDateType}}
 {{#checkBigDecimal fieldDescriptors}} {{/checkBigDecimal}}
