@@ -98,7 +98,7 @@ path: frontend/src/components/listers
                 if(val != undefined) {
                     {{#aggregateRoot.fieldDescriptors}}
                     {{#isKey}}obj['{{nameCamelCase}}'] = this.list[val].{{nameCamelCase}}; {{/isKey}}
-                    {{#isName}}obj['nameField'] = this.list[val].{{nameCamelCase}}; {{/isName}}
+                    {{#isKey}}obj['nameField'] = this.list[val].{{nameCamelCase}}; {{/isKey}}
                     {{/aggregateRoot.fieldDescriptors}}
                     this.$emit('selected', obj);
                 }
