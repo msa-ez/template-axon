@@ -3,4 +3,4 @@ rating: 5
 imageUrl: https://github.com/msa-ez/template-axon2/assets/130956306/09c9d2d7-ea48-44a6-ab9f-026accae3406
 templateName: axon
 description: Implement the event sourcing and CQRS architecture patterns in a distributed system
-group: Axon
+group: Axon, Spring boot
