@@ -1,7 +1,9 @@
-name: Nodejs
+name: Axon
 rating: 5
-imageUrl: https://github.com/msa-ez/template-spring-boot-3/assets/123912988/5de2d7f2-fae3-458f-80ff-864cfa0aa09b
-templateName: nodejs
-description: It features non-blocking I/O and high processing performance through the use of JavaScript, along with a single-threaded event loop.
+imageUrl: https://github.com/msa-ez/template-axon2/assets/130956306/09c9d2d7-ea48-44a6-ab9f-026accae3406
+templateName: axon
+description: Implement the event sourcing and CQRS architecture patterns in a distributed system
 tags:
-  - JavaScript
+  - Java
+  - Spring boot
+  - Axon
